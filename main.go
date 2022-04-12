@@ -1,12 +1,18 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/DelusionalOptimist/typistone-server/router"
 	"github.com/gorilla/websocket"
+)
+
+var (
+	port = 8080
+	host = "localhost"
 )
 
 var upgrader = &websocket.Upgrader{
@@ -16,7 +22,15 @@ var upgrader = &websocket.Upgrader{
 
 func main() {
 	logger := log.New(os.Stdout, "Typistone-server: ", 0)
+
+	logger.Println("Registering routes...")
 	router := router.NewRouter(upgrader, logger)
 
-	http.ListenAndServe("localhost:8080", router)
+	address := fmt.Sprint(host, ":", port)
+
+	logger.Printf("Starting listening on %s ...\n", address)
+	err := http.ListenAndServe(address, router)
+	if err != nil {
+		logger.Fatalln(err)
+	}
 }

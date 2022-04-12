@@ -14,7 +14,7 @@ func NewRouter(upgrader *websocket.Upgrader, log *log.Logger) *mux.Router {
 	h := handlers.NewHandler(upgrader, log)
 
 	r.HandleFunc("/create", h.CreateNewLobby)
-	r.HandleFunc("/join/{id}", h.JoinLobby)
+	r.HandleFunc("/join/{lobby_id}", h.JoinLobby)
 
 	return r
 }
